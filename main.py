@@ -177,6 +177,7 @@ class options_frame(tkinter.Frame):
                                                 )
         delete_password_button.pack(side="left", padx=20)
 
+        # Create a new frame for the specified button clicked
         self.content_frame = tkinter.Frame(options_menu,
                                            bg="#317ba3")
         self.content_frame.pack()
@@ -239,9 +240,9 @@ class options_frame(tkinter.Frame):
                                   fg="yellow",
                                   bg="gray",
                                   cursor="spider",
-                                  width=103,
+                                  width=90,
                                   relief="sunken",
-                                  bd=3
+                                  bd=4
                                   )
 
         userEntry.pack()
