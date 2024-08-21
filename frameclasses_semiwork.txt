@@ -1,0 +1,168 @@
+from JDLock_classes import *
+import tkinter
+from tkinter import ttk
+
+
+# First window
+class main_menu(tkinter.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        # Main Frame that holds all the menu shit on the main window ("master")
+        self.main_frame = tkinter.Frame(parent,
+                                        bg="#317ba3")
+        self.main_frame.pack()
+
+        # Used to keep track of frame we are on
+        self.frameIndex = 0
+
+        self.frameList = [options_frame(self.main_frame)]  # List of all the current frames we have
+        self.frameList[0].forget()  # Forgets the frame options frame and just shows the main_menu frame
+
+        # Image icon
+        self.JDLock_icon = tkinter.PhotoImage(file="170x245_logo.png")
+
+        # Front page label
+        frontpage_label = tkinter.Label(self.main_frame,
+                                        text="JDLock",
+                                        font=('fantasy', 100, 'bold'),
+                                        fg="yellow",
+                                        bg="gray",
+                                        relief="ridge",
+                                        bd=50,
+                                        padx=50,
+                                        pady=50,
+                                        image=self.JDLock_icon,
+                                        compound="right"
+                                        )
+        frontpage_label.pack()
+
+        # Frame that holds all the button/actions
+        options_tab = tkinter.Frame(self.main_frame,
+                                    bg="#317ba3")
+
+        options_tab.pack()
+
+        # Menu button that opens new window (for now)
+        view_menu_button = tkinter.Button(options_tab,
+                                          text="View Menu",
+                                          font=('fantasy', 10, 'bold'),
+                                          height=3,
+                                          width=20,
+                                          padx=100,
+                                          pady=1,
+                                          bg="gray",
+                                          fg="yellow",
+                                          relief="ridge",
+                                          bd=10,
+                                          command=self.changeWindow
+                                          )
+        view_menu_button.pack(pady=50)
+
+        main_exit_button = tkinter.Button(options_tab,
+                                          text="Exit JDLock",
+                                          font=('fantasy', 10, 'bold'),
+                                          height=3,
+                                          width=20,
+                                          padx=100,
+                                          pady=1,
+                                          bg="gray",
+                                          fg="yellow",
+                                          relief="ridge",
+                                          bd=10,
+
+                                          )
+        main_exit_button.pack(pady=5)
+
+    def changeWindow(self):
+        self.frameList[self.frameIndex].forget()
+        self.frameIndex = (self.frameIndex + 1) % len(self.frameList)
+        self.frameList[self.frameIndex].tkraise()
+        self.frameList[self.frameIndex].pack()
+
+
+# Second window
+class options_frame(tkinter.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.options_menu = tkinter.Frame(self,
+                                          bg="#317ba3")
+        self.options_menu.pack()
+
+        # Settings for icon
+        # JDLock_icon = tkinter.PhotoImage(file="prisoner_image_125x180-removebg-preview.png")
+        # self.options_menu.iconphoto(True, JDLock_icon)
+
+        # Label that prompts users with options
+        greet_User = tkinter.Label(self.options_menu,
+                                   text="How can we help you today?",
+                                   # image=JDLock_icon,
+                                   font=('fantasy', 40, 'bold'),
+                                   fg="yellow",
+                                   bg="gray",
+                                   relief="ridge",
+                                   bd=10,
+                                   padx=100,
+                                   pady=10,
+                                   )
+        greet_User.pack()
+
+        # Frame that holds all the options
+        menu_frame = tkinter.Frame(self.options_menu,
+                                   bg="#317ba3",
+                                   relief="sunken",
+                                   bd=100,
+                                   borderwidth=0,
+                                   highlightthickness=0,
+                                   padx=0
+                                   )
+        menu_frame.pack(pady=50,
+                        padx=0,
+                        )
+
+        # View passwords button to view your password(s)
+        view_passwords_button = tkinter.Button(menu_frame,
+                                               text="View Passwords",
+                                               font=('fantasy', 12, 'bold'),
+                                               bg="gray",
+                                               fg="yellow",
+                                               width=20
+
+                                               )
+        view_passwords_button.pack(side="left", padx=20)
+
+        # Add password button to add password(s)
+        add_password_button = tkinter.Button(menu_frame,
+                                             text="Add Password",
+                                             font=('fantasy', 12, 'bold'),
+                                             fg="yellow",
+                                             bg="gray"
+                                             )
+        add_password_button.pack(side="left", padx=20)
+
+        # Change password button to change password(s)
+        change_password_button = tkinter.Button(menu_frame,
+                                                text="Change Password",
+                                                font=('fantasy', 12, 'bold'),
+                                                fg="yellow",
+                                                bg="gray"
+                                                )
+        change_password_button.pack(side="left", padx=20)
+
+        # Delete password button to delete password(s)
+        delete_password_button = tkinter.Button(menu_frame,
+                                                text="Delete Password",
+                                                font=('fantasy', 12, 'bold'),
+                                                fg="yellow",
+                                                bg="gray"
+                                                )
+        delete_password_button.pack(side="left", padx=20)
+
+        # Button to exit JDLock
+        exit_button = tkinter.Button(menu_frame,
+                                     text="Go back to main menu",
+                                     font=('fantasy', 12, 'bold'),
+                                     fg="yellow",
+                                     bg="gray",
+                                     command=menu_frame.destroy,
+                                     )
+        exit_button.pack(side="left", padx=20)

@@ -1,0 +1,107 @@
+from JDLock_classes import *
+import tkinter
+from tkinter import ttk
+
+import tkinter
+
+
+def create_optionsMenu(welcome_window):
+    # Destroy widgets in welcome_window
+    for widget in welcome_window.winfo_children():
+        widget.destroy()
+
+    # Settings for option menu window
+    options_menu = tkinter.Frame(welcome_window, bg="#317ba3")
+    options_menu.pack()
+
+    # Label that prompts users with options
+    greet_User = tkinter.Label(options_menu, text="How can we help you today?",
+                               font=('fantasy', 40, 'bold'), fg="yellow", bg="gray",
+                               relief="ridge", bd=10, padx=100, pady=10)
+    greet_User.pack()
+
+    # Frame that holds all the options
+    menu_frame = tkinter.Frame(options_menu, bg="#317ba3", relief="sunken", bd=100,
+                               borderwidth=0, highlightthickness=0, padx=0)
+    menu_frame.pack(pady=50, padx=0)
+
+    # View passwords button to view your password(s)
+    view_passwords_button = tkinter.Button(menu_frame, text="View Passwords",
+                                           font=('fantasy', 12, 'bold'), bg="gray",
+                                           fg="yellow", width=20)
+    view_passwords_button.pack(side="left", padx=20)
+
+    # Add password button to add password(s)
+    add_password_button = tkinter.Button(menu_frame, text="Add Password",
+                                         font=('fantasy', 12, 'bold'), fg="yellow",
+                                         bg="gray")
+    add_password_button.pack(side="left", padx=20)
+
+    # Change password button to change password(s)
+    change_password_button = tkinter.Button(menu_frame, text="Change Password",
+                                            font=('fantasy', 12, 'bold'),
+                                            fg="yellow", bg="gray")
+    change_password_button.pack(side="left", padx=20)
+
+    # Delete password button to delete password(s)
+    delete_password_button = tkinter.Button(menu_frame, text="Delete Password",
+                                            font=('fantasy', 12, 'bold'),
+                                            fg="yellow", bg="gray")
+    delete_password_button.pack(side="left", padx=20)
+
+    # Button to go back to the main menu
+    exit_button = tkinter.Button(menu_frame, text="Go back to main menu",
+                                 font=('fantasy', 12, 'bold'), fg="yellow",
+                                 bg="gray", command=lambda: back_to_main_menu(welcome_window, options_menu))
+    exit_button.pack(side="left", padx=20)
+
+
+def back_to_main_menu(welcome_window, options_menu):
+    # Destroy widgets in options_menu
+    options_menu.destroy()
+    # Recreate welcome menu
+    welcome_menu(welcome_window)
+
+
+def welcome_menu(welcome_window=None):
+    if welcome_window is None:
+        welcome_window = tkinter.Tk(screenName="JDLock", baseName="JDLock", className="TK")
+        JDLock_icon = tkinter.PhotoImage(file="prisoner_image_125x180-removebg-preview.png")
+
+        welcome_window.title("JDLock")
+        welcome_window.geometry("800x400")
+        welcome_window.iconphoto(True, JDLock_icon)
+        welcome_window.configure(background="#317ba3")
+
+    # Front page label
+    frontpage_label = tkinter.Label(welcome_window, text="JDLock",
+                                    font=('fantasy', 100, 'bold'), fg="yellow",
+                                    bg="gray", relief="ridge", bd=50, padx=50, pady=50)
+    frontpage_label.pack()
+
+    options_tab = tkinter.Frame(welcome_window, bg="#317ba3")
+    options_tab.pack()
+
+    # Menu button that opens new window (for now)
+    view_menu_button = tkinter.Button(options_tab, text="View Menu",
+                                      font=('fantasy', 10, 'bold'), height=3, width=20,
+                                      padx=100, pady=1, bg="gray", fg="yellow",
+                                      relief="ridge", bd=10,
+                                      command=lambda: create_optionsMenu(welcome_window))
+    view_menu_button.pack(pady=50)
+
+    main_exit_button = tkinter.Button(options_tab, text="Exit JDLock",
+                                      font=('fantasy', 10, 'bold'), height=3, width=20,
+                                      padx=100, pady=1, bg="gray", fg="yellow",
+                                      relief="ridge", bd=10, command=welcome_window.destroy)
+    main_exit_button.pack(pady=5)
+
+    welcome_window.mainloop()
+
+
+def main():
+    welcome_menu()
+
+
+if __name__ == "__main__":
+    main()
