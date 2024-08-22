@@ -215,7 +215,7 @@ class options_frame(tkinter.Frame):
                                                 bg="gray",
                                                 fg="yellow",
                                                 width=50, height=10,
-                                                cursor="hand1")
+                                                )
 
         # self.password_listbox.insert(1, "Select one of the available options")
         # self.password_listbox.config(height=self.password_listbox.size()) # Adjusts size of listbox by values but not working as intended
@@ -235,21 +235,48 @@ class options_frame(tkinter.Frame):
                                          bg="#317ba3",
                                          )
 
+        accountname_label = tkinter.Label(self.entry_frame,
+                                          text="Account Name: ",
+                                          font=('fantasy', 13, 'bold'),
+                                          fg="yellow",
+                                          bg="gray",
+                                          cursor="spider",
+                                          width=13,
+                                          relief="flat",
+                                          bd=4,
+                                          )
+        accountname_label.pack(side=tkinter.LEFT)
+
         userEntry = tkinter.Entry(self.entry_frame,
                                   font=('fantasy', 13, 'bold'),
                                   fg="yellow",
                                   bg="gray",
                                   cursor="spider",
-                                  width=90,
-                                  relief="sunken",
-                                  bd=4
+                                  width=50,
+                                  relief="flat",
+                                  bd=4,
+
                                   )
 
-        userEntry.pack()
+        userEntry.pack(side=tkinter.RIGHT)
         self.entry_frame.pack()
-        # user_passwords = self.jdlock.add_password()
+        # add_password = self.jdlock.add_password()
 
         userEntry.insert(0, "Enter your Account Name")
+
+        submit_button = tkinter.Button(self.content_frame,
+                                       text="Submit",
+                                       font=('fantasy', 13, 'bold'),
+                                       fg="yellow",
+                                       bg="navajowhite3",
+                                       activebackground="cadet blue",
+                                       cursor="arrow",
+                                       relief="raised",
+                                       bd=4,
+                                       # command=add_password
+                                       )
+
+        submit_button.pack(pady=10)
 
 
 def main_window_open():
