@@ -183,7 +183,7 @@ class options_frame(tkinter.Frame):
         self.content_frame.pack()
 
         '''
-        userEntry = tkinter.Entry(options_menu,
+        self.accountEntry = tkinter.Entry(options_menu,
                                   width=31,
                                   font=('fantasy', 18, 'bold'),
                                   fg="yellow",
@@ -195,9 +195,9 @@ class options_frame(tkinter.Frame):
 
 
 
-        userEntry.pack(padx=1, pady=1)
+        self.accountEntry.pack(padx=1, pady=1)
 
-        userEntry.insert(0, "Select one of the available options")
+        self.accountEntry.insert(0, "Select one of the available options")
         '''
 
     # Clears the widgets in a frame
@@ -205,9 +205,8 @@ class options_frame(tkinter.Frame):
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
-
-    def get_userentry(self):
-        content = tkinter.Entry.get()
+    # def get_userentry(self):
+    #     content = tkinter.Entry.get()
 
     # Displays a listbox of all the account name and passwords
     def display_passwords(self):
@@ -237,51 +236,59 @@ class options_frame(tkinter.Frame):
 
     def display_add_password(self):
         self.clear_content()
-        self.entry_frame = tkinter.Frame(self.content_frame,
-                                         bg="#317ba3",
-                                         )
 
-        accountname_label = tkinter.Label(self.entry_frame,
-                                          text="Account Name: ",
-                                          font=('fantasy', 13, 'bold'),
-                                          fg="yellow",
-                                          bg="gray",
-                                          cursor="arrow",
-                                          width=13,
-                                          relief="flat",
-                                          bd=4,
-                                          )
+        # Frame to hold account name and password entries
+        self.entry_frame = tkinter.Frame(self.content_frame, bg="#317ba3")
+        self.entry_frame.pack()
+
+        # Account Name label and entry
+        accountname_label = tkinter.Label(
+            self.entry_frame, text="Account Name: ", font=('fantasy', 13, 'bold'),
+            fg="yellow", bg="gray", width=13, relief="flat", bd=4
+        )
         accountname_label.pack(side=tkinter.LEFT)
 
-        userEntry = tkinter.Entry(self.entry_frame,
-                                  font=('fantasy', 13, 'bold'),
-                                  fg="yellow",
-                                  bg="gray",
-                                  width=50,
-                                  relief="flat",
-                                  bd=4,
-                                  )
+        self.account_entry = tkinter.Entry(
+            self.entry_frame, font=('fantasy', 13, 'bold'),
+            fg="yellow", bg="gray", width=30, relief="flat", bd=4
+        )
+        self.account_entry.pack(side=tkinter.LEFT)
 
-        userEntry.pack(side=tkinter.RIGHT)
-        userEntry.focus()
-        self.entry_frame.pack()
-        # add_password = self.jdlock.add_password()
+        # Password label and entry
+        password_label = tkinter.Label(
+            self.entry_frame, text="Password: ", font=('fantasy', 13, 'bold'),
+            fg="yellow", bg="gray", width=13, relief="flat", bd=4
+        )
+        password_label.pack(side=tkinter.LEFT)
 
-        userEntry.insert(0, "Enter your Account Name")
+        self.password_entry = tkinter.Entry(
+            self.entry_frame, font=('fantasy', 13, 'bold'),
+            fg="yellow", bg="gray", width=30, relief="flat", bd=4, show='*'
+        )
+        self.password_entry.pack(side=tkinter.LEFT)
 
-        submit_button = tkinter.Button(self.content_frame,
-                                       text="Submit",
-                                       font=('fantasy', 13, 'bold'),
-                                       fg="yellow",
-                                       bg="navajowhite3",
-                                       activebackground="cadet blue",
-                                       cursor="hand2",
-                                       relief="raised",
-                                       bd=4,
-                                       command=self.get_userentry()
-                                       )
-
+        # Submit button
+        submit_button = tkinter.Button(
+            self.content_frame, text="Submit", font=('fantasy', 13, 'bold'),
+            fg="yellow", bg="navajowhite3", activebackground="cadet blue",
+            cursor="hand2", relief="raised", bd=4, command=self.submit_add_password
+        )
         submit_button.pack(pady=10)
+
+    def submit_add_password(self):
+        # Get the values from the entry boxes
+        account_name = self.account_entry.get()
+        new_password = self.password_entry.get()
+
+        # Call the add_password function from UserPassword class
+        self.jdlock.add_password_entry(account_name, new_password)
+
+        # Clear entry fields after submission
+        self.account_entry.delete(0, tkinter.END)
+        self.password_entry.delete(0, tkinter.END)
+
+        # Update the displayed passwords
+        self.display_passwords()
 
 
 def main_window_open():

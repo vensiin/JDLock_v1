@@ -102,6 +102,28 @@ class UserPassword:
         except FileNotFoundError:
             print("Error: passwords.json file not found.")
 
+    def add_password_entry(self, account_name, new_password):
+        try:
+            # Read existing passwords from the JSON file
+            with open("passwords.json", "r") as json_file:
+                password_data = json.load(json_file)
+
+            # Add the new account and password
+            passwords = {
+                "Account": account_name,
+                "Account_Password": new_password
+            }
+            password_data["Decrypted_Passwords"].append(passwords)
+
+            # Write updated passwords back to the file
+            with open("passwords.json", "w") as json_file:
+                json.dump(password_data, json_file, indent=2)
+
+            print(f"Password for {account_name} added successfully!")
+
+        except FileNotFoundError:
+            print("Error: passwords.json file not found.")
+
     def change_password(self):
         # Outputs all the users' passwords
         self.get_passwords()
