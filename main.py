@@ -2,6 +2,7 @@ from JDLock_classes import *
 import tkinter
 from tkinter import ttk
 from tkinter import Entry
+from tkinter import messagebox
 
 
 # Blank frame with 2 buttons
@@ -183,7 +184,7 @@ class options_frame(tkinter.Frame):
         self.content_frame.pack()
 
         '''
-        userEntry = tkinter.Entry(options_menu,
+        self.accountEntry = tkinter.Entry(options_menu,
                                   width=31,
                                   font=('fantasy', 18, 'bold'),
                                   fg="yellow",
@@ -195,19 +196,15 @@ class options_frame(tkinter.Frame):
 
 
 
-        userEntry.pack(padx=1, pady=1)
+        self.accountEntry.pack(padx=1, pady=1)
 
-        userEntry.insert(0, "Select one of the available options")
+        self.accountEntry.insert(0, "Select one of the available options")
         '''
 
     # Clears the widgets in a frame
     def clear_content(self):
         for widget in self.content_frame.winfo_children():
             widget.destroy()
-
-
-    def get_userentry(self):
-        content = tkinter.Entry.get()
 
     # Displays a listbox of all the account name and passwords
     def display_passwords(self):
@@ -237,11 +234,16 @@ class options_frame(tkinter.Frame):
 
     def display_add_password(self):
         self.clear_content()
-        self.entry_frame = tkinter.Frame(self.content_frame,
-                                         bg="#317ba3",
-                                         )
 
-        accountname_label = tkinter.Label(self.entry_frame,
+        # Account Section
+
+        # Made a frame for the account label and entry box because it kept putting the account label/entry with the password label/entry
+        self.account_frame = tkinter.Frame(self.content_frame,
+                                           bg="#317ba3",
+                                           )
+
+        # Label for account name
+        accountname_label = tkinter.Label(self.account_frame,
                                           text="Account Name: ",
                                           font=('fantasy', 13, 'bold'),
                                           fg="yellow",
@@ -251,23 +253,57 @@ class options_frame(tkinter.Frame):
                                           relief="flat",
                                           bd=4,
                                           )
-        accountname_label.pack(side=tkinter.LEFT)
+        accountname_label.pack(side=tkinter.LEFT, pady=10)
 
-        userEntry = tkinter.Entry(self.entry_frame,
-                                  font=('fantasy', 13, 'bold'),
-                                  fg="yellow",
-                                  bg="gray",
-                                  width=50,
-                                  relief="flat",
-                                  bd=4,
-                                  )
+        self.accountEntry = tkinter.Entry(self.account_frame,
+                                          font=('fantasy', 13, 'bold'),
+                                          fg="yellow",
+                                          bg="gray",
+                                          width=50,
+                                          relief="flat",
+                                          bd=4,
+                                          )
 
-        userEntry.pack(side=tkinter.RIGHT)
-        userEntry.focus()
-        self.entry_frame.pack()
-        # add_password = self.jdlock.add_password()
+        self.accountEntry.pack(side=tkinter.RIGHT)
+        self.accountEntry.focus()
+        self.accountEntry.insert(0, "Enter your Account Name")
 
-        userEntry.insert(0, "Enter your Account Name")
+        # Packed after everything to remain order because the order of the pack DOES matter
+        self.account_frame.pack()
+
+        # Password section
+
+        self.password_frame = tkinter.Frame(self.content_frame,
+                                            bg="#317ba3",
+                                            )
+
+        # Packed in order because I don't want it to interfere with the submit button
+        self.password_frame.pack()
+
+        # Password frame that holds the password label/entry
+        password_label = tkinter.Label(self.password_frame,
+                                       text="Password : ",
+                                       font=('fantasy', 13, 'bold'),
+                                       fg="yellow",
+                                       bg="gray",
+                                       cursor="arrow",
+                                       width=13,
+                                       relief="flat",
+                                       bd=4,
+                                       )
+        password_label.pack(side=tkinter.LEFT, pady=10)
+
+        self.passwordEntry = tkinter.Entry(self.password_frame,
+                                           font=('fantasy', 13, 'bold'),
+                                           fg="yellow",
+                                           bg="gray",
+                                           width=50,
+                                           relief="flat",
+                                           bd=4,
+                                           )
+
+        self.passwordEntry.pack(side=tkinter.RIGHT)
+        self.passwordEntry.insert(0, "Enter your Password")
 
         submit_button = tkinter.Button(self.content_frame,
                                        text="Submit",
@@ -278,10 +314,18 @@ class options_frame(tkinter.Frame):
                                        cursor="hand2",
                                        relief="raised",
                                        bd=4,
-                                       command=self.get_userentry()
+                                       command=self.submit_addPassword
                                        )
 
-        submit_button.pack(pady=10)
+        submit_button.pack(side=tkinter.BOTTOM, pady=10)
+
+    def submit_addPassword(self):
+        accountName = self.accountEntry.get()
+        passwordName = self.passwordEntry.get()
+
+        add_new = self.jdlock.add_password_entry(accountName, passwordName)
+
+        messagebox.showinfo("Awesome", "Password saved successfully!")
 
 
 def main_window_open():
