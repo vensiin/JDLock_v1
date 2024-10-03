@@ -266,7 +266,7 @@ class options_frame(tkinter.Frame):
 
         self.accountEntry.pack(side=tkinter.RIGHT)
         self.accountEntry.focus()
-        self.accountEntry.insert(0, "Enter your Account Name")
+        # self.accountEntry.insert(0, "Enter your Account Name")
 
         # Packed after everything to remain order because the order of the pack DOES matter
         self.account_frame.pack()
@@ -303,7 +303,7 @@ class options_frame(tkinter.Frame):
                                            )
 
         self.passwordEntry.pack(side=tkinter.RIGHT)
-        self.passwordEntry.insert(0, "Enter your Password")
+        # self.passwordEntry.insert(0, "Enter your Password")
 
         submit_button = tkinter.Button(self.content_frame,
                                        text="Submit",
