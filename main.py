@@ -236,7 +236,7 @@ class options_frame(tkinter.Frame):
             account = selected_account.split(":")[0]  # take account name from the selection
             delete_success = self.jdlock.delete_password(account)  # call delete password function
             if delete_success:
-                pass
+                messagebox.showinfo("Success", f"Password for {account} deleted successfully!")
             self.display_delete_password()  # refresh the list of accounts
 
     def display_delete_password(self):
