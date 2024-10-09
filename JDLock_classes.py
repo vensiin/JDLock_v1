@@ -167,27 +167,24 @@ class UserPassword:
         with open("passwords.json", "w") as json_file:
             json.dump(account_data, json_file, indent=2)
 
-    def delete_password(self):
+    # Modify the delete_password method in UserPassword class
+    def delete_password(self, account_name):
         with open("passwords.json", "r") as json_file:
             password_data = json.load(json_file)
 
-        Account_Delete = input("Enter Account name to be deleted:")
-        password_Delete = input("Enter Password to be deleted: ")
-        passwords = {
-            "Account": Account_Delete,
-            "Account_Password": password_Delete
-        }
-
-        for Account_Password in password_data["Decrypted_Passwords"]:
-            if password_Delete == Account_Password["Account_Password"]:
-                password_data["Decrypted_Passwords"].remove(passwords)
-                print(f"The Password {password_Delete} has been successfully deleted!")
+        # Find the account and password to delete
+        for account_info in password_data["Decrypted_Passwords"]:
+            if account_info["Account"] == account_name:
+                password_data["Decrypted_Passwords"].remove(account_info)
+                print(f"The account {account_name} and its password have been successfully deleted!")
                 break
         else:
-            print(f"The Password {password_Delete} is not a current password")
+            print(f"The account {account_name} is not found!")
 
+        # Write updated data back to the JSON file
         with open("passwords.json", "w") as json_file:
             json.dump(password_data, json_file, indent=2)
+
 
 
 # Prompt terminal
