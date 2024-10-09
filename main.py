@@ -5,7 +5,6 @@ from tkinter import Entry
 from tkinter import messagebox
 import json
 
-
 # Blank frame with 2 buttons
 class Main_Window_frame():
     def __init__(self, master):
@@ -221,22 +220,27 @@ class options_frame(tkinter.Frame):
         add_new = self.jdlock.add_password_entry(accountName, passwordName)
         messagebox.showinfo("Awesome", "Password saved successfully!")
 
+    # submits delete request
+    def submit_deletePassword(self):
+        selected_account = self.password_listbox.get(tkinter.ACTIVE)  # get the selected item from the box
+        if selected_account:  # check if there is a selection
+            account = selected_account.split(":")[0]  # take account name from the selection
+            delete_success = self.jdlock.delete_password(account)  # call delete password function
+            if delete_success:
+                pass
+            self.display_delete_password()  # refresh the list of accounts
+
     def display_delete_password(self):
         self.clear_content()
         user_passwords = self.jdlock.fetch_passwords()
 
-        # Create buttons for each account
+        # Create a listbox to display accounts
+        self.password_listbox = tkinter.Listbox(self.content_frame, font=('fantasy', 12, 'bold'), bg="gray", fg="yellow", width=50, height=10)
+        self.password_listbox.pack()
+
+        # Populate the listbox with account names
         for account, _ in user_passwords:
-            account_button = tkinter.Button(self.content_frame,
-                                            text=account,
-                                            font=('fantasy', 13, 'bold'),
-                                            fg="yellow",
-                                            bg="gray",
-                                            cursor="hand2",
-                                            relief="raised",
-                                            bd=4,
-                                            command=lambda acc=account: self.submit_deletePassword(acc))
-            account_button.pack(pady=10)
+            self.password_listbox.insert(tkinter.END, account)
 
         submit_button = tkinter.Button(self.content_frame,
                                        text="Delete Selected",
@@ -250,18 +254,6 @@ class options_frame(tkinter.Frame):
                                        command=self.submit_deletePassword)
         submit_button.pack(side=tkinter.BOTTOM, pady=10)
 
-    # Submits delete request
-    def submit_deletePassword(self, account):
-        delete_success = self.jdlock.delete_password(account)  # Call delete password method from the JDLock class
-        if delete_success:
-            messagebox.showinfo("Success", f"Password for {account} deleted successfully!")
-
-        self.display_delete_password()  # Refresh the list of accounts
-
-
-    
-    
-
 def main_window_open():
     root = tkinter.Tk(screenName="JDLock", baseName="JDLock", className="TK")
     root.title("JDLock")
@@ -271,5 +263,5 @@ def main_window_open():
 
     root.mainloop()
 
-
 main_window_open()
+
