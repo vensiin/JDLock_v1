@@ -229,22 +229,28 @@ class options_frame(tkinter.Frame):
         add_new = self.jdlock.add_password_entry(accountName, passwordName)
         messagebox.showinfo("Awesome", "Password saved successfully!")
 
+    # submits delete request
+    def submit_deletePassword(self):
+        selected_account = self.password_listbox.get(tkinter.ACTIVE)  # get the selected item from the box
+        if selected_account:  # check if there is a selection
+            account = selected_account.split(":")[0]  # take account name from the selection
+            delete_success = self.jdlock.delete_password(account)  # call delete password function
+            if delete_success:
+                pass
+            self.display_delete_password()  # refresh the list of accounts
+
     def display_delete_password(self):
         self.clear_content()
         user_passwords = self.jdlock.fetch_passwords()
 
-        # Create buttons for each account
+        # Create a listbox to display accounts
+        self.password_listbox = tkinter.Listbox(self.content_frame, font=('fantasy', 12, 'bold'), bg="gray",
+                                                fg="yellow", width=50, height=10, selectmode="multiple")
+        self.password_listbox.pack()
+
+        # Populate the listbox with account names
         for account, _ in user_passwords:
-            account_button = tkinter.Button(self.content_frame,
-                                            text=account,
-                                            font=('fantasy', 13, 'bold'),
-                                            fg="yellow",
-                                            bg="gray",
-                                            cursor="hand2",
-                                            relief="raised",
-                                            bd=4,
-                                            command=lambda acc=account: self.submit_deletePassword(acc))
-            account_button.pack(pady=10)
+            self.password_listbox.insert(tkinter.END, account)
 
         submit_button = tkinter.Button(self.content_frame,
                                        text="Delete Selected",
