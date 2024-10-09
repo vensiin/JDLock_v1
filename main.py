@@ -231,12 +231,13 @@ class options_frame(tkinter.Frame):
 
     # submits delete request
     def submit_deletePassword(self):
-        selected_account = self.password_listbox.get(tkinter.ACTIVE)  # get the selected item from the box
-        if selected_account:  # check if there is a selection
-            account = selected_account.split(":")[0]  # take account name from the selection
-            delete_success = self.jdlock.delete_password(account)  # call delete password function
-            if delete_success:
-                pass
+        selected_accounts = self.password_listbox.curselection()  # get the selected items
+        if selected_accounts:  # check if there are selections
+            for index in selected_accounts:  # iterate through the selected indices
+                account = self.password_listbox.get(index).split(":")[0]  # get account name
+                delete_success = self.jdlock.delete_password(account)  # call delete password function
+                if delete_success:
+                    messagebox.showinfo("Success", f"Password for {account} deleted successfully!")
             self.display_delete_password()  # refresh the list of accounts
 
     def display_delete_password(self):
@@ -265,12 +266,6 @@ class options_frame(tkinter.Frame):
         submit_button.pack(side=tkinter.BOTTOM, pady=10)
 
     # Submits delete request
-    def submit_deletePassword(self, account):
-        delete_success = self.jdlock.delete_password(account)  # Call delete password method from the JDLock class
-        if delete_success:
-            messagebox.showinfo("Success", f"Password for {account} deleted successfully!")
-
-        self.display_delete_password()  # Refresh the list of accounts
 
 
 def main_window_open():
