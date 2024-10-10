@@ -177,14 +177,10 @@ class UserPassword:
             if account_info["Account"] == account_name:
                 password_data["Decrypted_Passwords"].remove(account_info)
                 print(f"The account {account_name} and its password have been successfully deleted!")
-                break
-        else:
-            print(f"The account {account_name} is not found!")
 
         # Write updated data back to the JSON file
         with open("passwords.json", "w") as json_file:
             json.dump(password_data, json_file, indent=2)
-
 
 
 # Prompt terminal
