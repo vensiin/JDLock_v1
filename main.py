@@ -150,7 +150,7 @@ class options_frame(tkinter.Frame):
                                                 fg="yellow",
                                                 bg="gray",
                                                 cursor="hand2",
-                                                command=self.jdlock.change_password
+                                                command=self.change_password
                                                 )
         change_password_button.pack(side="left", padx=20)
 
@@ -192,6 +192,7 @@ class options_frame(tkinter.Frame):
         for Account, Account_Passwords in user_passwords:
             self.password_listbox.insert(tkinter.END, f"{Account}: {Account_Passwords}")
 
+    # Displays entire add_password function
     def display_add_password(self):
         self.clear_content()
 
@@ -314,7 +315,79 @@ class options_frame(tkinter.Frame):
                                        command=self.submit_deletePassword)
         submit_button.pack(side=tkinter.BOTTOM, pady=10)
 
-    # Submits delete request
+    # This is supposed to submit the changed password
+    def submit_changedPassword(self):
+
+        # This selects the account on the listbox
+        selected_account = self.password_listbox.curselection()
+
+        # Get only the account name because the listbox in this function only displays the account names
+        account = self.password_listbox.get(selected_account).split(":")[0]
+
+        New_Password = self.ChangePW_Entry.get() # This is the new password the user is inputting
+
+        change_success = self.jdlock.change_password()
+
+    def change_password(self):
+        self.clear_content()
+        user_passwords = self.jdlock.fetch_passwords()
+
+        # Account Section
+        self.changePW_frame = tkinter.Frame(self.content_frame, bg="#317ba3")
+
+        #Create a listbox to display accounts
+        self.password_listbox = tkinter.Listbox(self.changePW_frame,
+                                                font=('fantasy', 12, 'bold'),
+                                                bg="gray",
+                                                fg="yellow",
+                                                width=50,
+                                                height=10,
+                                                selectmode="single")
+        self.password_listbox.pack()
+
+        # Populate the listbox with only the account names, the _ ignores the passwords since we are iterating through a tuple
+        for account, _ in user_passwords:
+            self.password_listbox.insert(tkinter.END, account)
+
+        # Label for account name
+        ChangePW_label = tkinter.Label(self.changePW_frame,
+                                          text="New Password : ",
+                                          font=('fantasy', 13, 'bold'),
+                                          fg="yellow",
+                                          bg="gray",
+                                          width=13,
+                                          relief="flat",
+                                          bd=4)
+        ChangePW_label.pack(side=tkinter.LEFT, pady=10)
+
+        self.ChangePW_Entry = tkinter.Entry(self.changePW_frame,
+                                          font=('fantasy', 13, 'bold'),
+                                          fg="yellow", bg="gray",
+                                          width=35, relief="flat",
+                                          bd=4)
+        self.ChangePW_Entry.pack(side=tkinter.RIGHT)
+        self.ChangePW_Entry.focus()
+
+
+        # Packed after everything to remain order because the order of the pack DOES matter
+        self.changePW_frame.pack()
+
+
+
+        submit_button = tkinter.Button(self.content_frame,
+                                       text="Submit",
+                                       font=('fantasy', 13, 'bold'),
+                                       fg="yellow",
+                                       bg="navajowhite3",
+                                       activebackground="cadet blue",
+                                       cursor="hand2",
+                                       relief="raised",
+                                       bd=4,
+                                       command=self.submit_changedPassword)
+        submit_button.pack(side=tkinter.BOTTOM, pady=10)
+
+
+
 
 
 def main_window_open():
