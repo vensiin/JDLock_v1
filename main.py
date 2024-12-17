@@ -210,6 +210,7 @@ class options_frame(tkinter.Frame):
                                           bd=4)
         accountname_label.pack(side=tkinter.LEFT, pady=10)
 
+        # Entry box to put in account name
         self.accountEntry = tkinter.Entry(self.account_frame,
                                           font=('fantasy', 13, 'bold'),
                                           fg="yellow", bg="gray",
@@ -237,6 +238,7 @@ class options_frame(tkinter.Frame):
                                        bd=4)
         password_label.pack(side=tkinter.LEFT, pady=10)
 
+        # Entry box to put in password for account name
         self.passwordEntry = tkinter.Entry(self.password_frame,
                                            font=('fantasy', 13, 'bold'),
                                            fg="yellow",
@@ -246,6 +248,7 @@ class options_frame(tkinter.Frame):
                                            bd=4)
         self.passwordEntry.pack(side=tkinter.RIGHT)
 
+        # Submit button
         submit_button = tkinter.Button(self.content_frame,
                                        text="Submit",
                                        font=('fantasy', 13, 'bold'),
@@ -258,6 +261,7 @@ class options_frame(tkinter.Frame):
                                        command=self.submit_addPassword)
         submit_button.pack(side=tkinter.BOTTOM, pady=10)
 
+    # Calls the add_password_entry function in the JDLock_classes file
     def submit_addPassword(self):
         # Variable that is holding account name
         accountName = self.accountEntry.get()
@@ -265,6 +269,7 @@ class options_frame(tkinter.Frame):
         # Variable holding Account password
         passwordName = self.passwordEntry.get()
 
+        # Function that calls the add_password_entry function in the JDlock classes file with parameters so it has access
         add_new = self.jdlock.add_password_entry(accountName, passwordName)
         messagebox.showinfo("Awesome", "Password saved successfully!")
 
@@ -278,16 +283,16 @@ class options_frame(tkinter.Frame):
                 # Get only the account name because the listbox in this function only displays the account names
                 account = self.password_listbox.get(index).split(":")[0]
 
-                delete_success = self.jdlock.delete_password(
-                    account)  # Call delete password function in the JDlock_classes
+                delete_success = self.jdlock.delete_password(account)  # Call delete password function in the JDlock_classes
 
         messagebox.showinfo("Success", f"Password for {account} deleted successfully!")
 
         self.display_delete_password()  # refresh the list of accounts
 
+    # Displays the delete password frame
     def display_delete_password(self):
         self.clear_content()
-        user_passwords = self.jdlock.fetch_passwords()
+        user_passwords = self.jdlock.fetch_passwords() # Variable that holds passwords
 
         # Create a listbox to display accounts
         self.password_listbox = tkinter.Listbox(self.content_frame,
@@ -303,6 +308,7 @@ class options_frame(tkinter.Frame):
         for account, _ in user_passwords:
             self.password_listbox.insert(tkinter.END, account)
 
+        # Submit button
         submit_button = tkinter.Button(self.content_frame,
                                        text="Delete Selected",
                                        font=('fantasy', 13, 'bold'),
@@ -315,24 +321,31 @@ class options_frame(tkinter.Frame):
                                        command=self.submit_deletePassword)
         submit_button.pack(side=tkinter.BOTTOM, pady=10)
 
-    # This is supposed to submit the changed password
+    # This submits the changed password
     def submit_changedPassword(self):
 
         # This selects the account on the listbox
         selected_account = self.password_listbox.curselection()
 
-        # Get only the account name because the listbox in this function only displays the account names
-        account = self.password_listbox.get(selected_account).split(":")[0]
+        if selected_account:
+            # Get only the account name because the listbox in this function only displays the account names
+            account = self.password_listbox.get(selected_account).split(":")[0]
 
-        New_Password = self.ChangePW_Entry.get() # This is the new password the user is inputting
+            New_Password = self.ChangePW_Entry.get() # This is the new password the user is inputting
 
-        change_success = self.jdlock.change_password()
+            # Calls the change_password function in the JDLock_classes file with the account and new_password as parameters
+            change_success = self.jdlock.change_password(account,New_Password)
 
+        messagebox.showinfo("Success", f"Password has changed successfully!")
+
+        self.display_passwords() # Displays passwords after the button is clicked
+
+    # Displays the change password frame
     def change_password(self):
         self.clear_content()
         user_passwords = self.jdlock.fetch_passwords()
 
-        # Account Section
+        # Change PW frame because we needed 2 seperate frames so the change password button wouldn't be within the listbox/entrybox
         self.changePW_frame = tkinter.Frame(self.content_frame, bg="#317ba3")
 
         #Create a listbox to display accounts
@@ -349,7 +362,7 @@ class options_frame(tkinter.Frame):
         for account, _ in user_passwords:
             self.password_listbox.insert(tkinter.END, account)
 
-        # Label for account name
+        # Label for the ChangePW entry box
         ChangePW_label = tkinter.Label(self.changePW_frame,
                                           text="New Password : ",
                                           font=('fantasy', 13, 'bold'),
@@ -373,9 +386,9 @@ class options_frame(tkinter.Frame):
         self.changePW_frame.pack()
 
 
-
+        # Submit button
         submit_button = tkinter.Button(self.content_frame,
-                                       text="Submit",
+                                       text="Change Password for this account",
                                        font=('fantasy', 13, 'bold'),
                                        fg="yellow",
                                        bg="navajowhite3",

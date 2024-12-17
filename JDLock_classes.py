@@ -124,27 +124,23 @@ class UserPassword:
         except FileNotFoundError:
             print("Error: passwords.json file not found.")
 
-    def change_password(self):
+    def change_password(self,account_name, new_password):
         # Outputs all the users' passwords
-        self.get_passwords()
+        # self.get_passwords()
 
         # Opens JSON File to READ as json_file
         with open("passwords.json", "r") as json_file:
             # Initializes account_data as the JSON File
             password_data = json.load(json_file)
 
-        # Prompts users to input which password they would like to change
-        user_change = input("Which password would you like to change? (Enter password exactly as is): ")
 
-        # Prompts users to input what they would like to change it to
-        new_password = input("Enter the new password: ")
 
         # Iterates through the Decrypted_Passwords JSON
-        for Account_Password in password_data["Decrypted_Passwords"]:
-            # Conditional that checks if the input that the user put is in the JSON File
-            if user_change == Account_Password["Account_Password"]:
-                Account_Password["Account_Password"] = new_password
-                print(f"The Password {user_change} Has Been successfully Changed to: {new_password}!")
+        for Account in password_data["Decrypted_Passwords"]:
+            # Conditional that checks if the parameter that is in the JSON File
+            if account_name == Account["Account"]:
+                Account["Account_Password"] = new_password
+                print(f"The Password for {account_name} Has Been successfully Changed to: {new_password}!")
             else:
                 pass
         with open("passwords.json", "w") as json_file:
