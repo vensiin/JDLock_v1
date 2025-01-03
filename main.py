@@ -316,6 +316,8 @@ class options_frame(tkinter.Frame):
 
     # Submits delete request
 
+    print("")
+
 
 def main_window_open():
     root = tkinter.Tk(screenName="JDLock", baseName="JDLock", className="TK")
